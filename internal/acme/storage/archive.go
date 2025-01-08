@@ -64,7 +64,7 @@ func (s *ArchiveStorage) SaveResource(resource *certificate.Resource) (err error
 	}
 
 	if resource.IssuerCertificate != nil {
-		err = s.WriteFile(s.GetFileName(resource.Domain, issuerFile), resource.IssuerCertificate)
+		err = s.WriteFile(resource.Domain, issuerFile, resource.IssuerCertificate)
 		if err != nil {
 			zap.L().Error("failed to write issuer certificate", zap.Error(err))
 			return
@@ -72,13 +72,13 @@ func (s *ArchiveStorage) SaveResource(resource *certificate.Resource) (err error
 	}
 
 	if resource.PrivateKey != nil {
-		err = s.WriteFile(s.GetFileName(resource.Domain, privateFile), resource.PrivateKey)
+		err = s.WriteFile(resource.Domain, privateFile, resource.PrivateKey)
 		if err != nil {
 			zap.L().Error("failed to write private key", zap.Error(err))
 			return
 		}
 
-		err = s.WriteFile(s.GetFileName(resource.Domain, certFile), resource.Certificate)
+		err = s.WriteFile(resource.Domain, certFile, resource.Certificate)
 		if err != nil {
 			zap.L().Error("failed to write certificate", zap.Error(err))
 		}
@@ -87,16 +87,16 @@ func (s *ArchiveStorage) SaveResource(resource *certificate.Resource) (err error
 	return
 }
 
-func (s *ArchiveStorage) GetFileName(domain, filename string) string {
-	return filepath.Join(s.rootPath, domain, filename)
+func (s *ArchiveStorage) GetFileName(domain, file string) string {
+	return filepath.Join(s.rootPath, domain, file)
 }
 
-func (s *ArchiveStorage) WriteFile(filename string, data []byte) error {
-	return os.WriteFile(filepath.Join(s.rootPath, filename), data, 0o600)
+func (s *ArchiveStorage) WriteFile(domain, file string, data []byte) error {
+	return os.WriteFile(s.GetFileName(domain, file), data, 0o600)
 }
 
-func (s *ArchiveStorage) ReadFile(domain, filename string) ([]byte, error) {
-	return os.ReadFile(s.GetFileName(domain, filename))
+func (s *ArchiveStorage) ReadFile(domain, file string) ([]byte, error) {
+	return os.ReadFile(s.GetFileName(domain, file))
 }
 
 func (s *ArchiveStorage) ReadPrivateKey(domain string) (crypto.PrivateKey, error) {
