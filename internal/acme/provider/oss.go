@@ -4,17 +4,19 @@
 
 package provider
 
-import "fmt"
+import (
+	"go.uber.org/zap"
+)
 
 type OssProvider struct {
 }
 
 func (p OssProvider) Present(domain, token, keyAuth string) error {
-	fmt.Println("Oss Present", domain, token, keyAuth)
+	zap.S().Infof("OSS Present, domain = %s, token = %s, keyAuth = %s", domain, token, keyAuth)
 	return nil
 }
 
 func (p OssProvider) CleanUp(domain, token, keyAuth string) error {
-	fmt.Println("Oss CleanUp", domain, token, keyAuth)
+	zap.S().Infof("OSS CleanUp, domain = %s, token = %s, keyAuth = %s", domain, token, keyAuth)
 	return nil
 }
