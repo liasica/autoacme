@@ -8,8 +8,6 @@ import (
 	"os"
 )
 
-const baseStoragePath = "./runtime"
-
 func CreateNonExistingFolder(path string) (err error) {
 	_, err = os.Stat(path)
 	if err != nil {

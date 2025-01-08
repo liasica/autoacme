@@ -15,10 +15,9 @@ import (
 	"github.com/liasica/aliacme/pkg/logger"
 )
 
-var Version string
-
-func Boot(path, ver string) {
-	Version = ver
+func Boot(path, storage, ver string) {
+	g.StoragePath = storage
+	g.Version = ver
 
 	// 设置全局时区
 	tz := "Asia/Shanghai"
@@ -32,12 +31,13 @@ func Boot(path, ver string) {
 	log.Logger = &logger.Logger{}
 
 	// 创建runtime目录
-	if _, err := os.Stat("runtime"); os.IsNotExist(err) {
-		_ = os.MkdirAll("runtime", 0755)
+	if _, err := os.Stat(storage); os.IsNotExist(err) {
+		_ = os.MkdirAll(storage, 0755)
 	}
 
 	// 打印版本号
-	zap.S().Info("version: " + Version)
+	zap.S().Info("version: " + g.Version)
+	zap.S().Infof("storage path: %s", g.StoragePath)
 
 	// 读取配置文件
 	g.LoadConfig(path)

@@ -20,8 +20,6 @@ type Hook struct {
 }
 
 // NewHook 创建 Hook
-// priv, _ = os.ReadFile("./runtime/archive/share.bijuzaixian.com/privkey.pem")
-// pub, _ = os.ReadFile("./runtime/archive/share.bijuzaixian.com/fullchain.pem")
 func NewHook(cfg *g.Domain, priv, cert []byte) *Hook {
 	return &Hook{
 		wg:          &sync.WaitGroup{},

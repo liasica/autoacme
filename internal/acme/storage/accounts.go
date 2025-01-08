@@ -87,7 +87,7 @@ type AccountsStorage struct {
 }
 
 func NewAccountsStorage(email string) (s *AccountsStorage, err error) {
-	rootPath := filepath.Join(baseStoragePath, baseAccountsRootFolderName)
+	rootPath := filepath.Join(g.StoragePath, baseAccountsRootFolderName)
 	serverURL, _ := url.Parse(lego.LEDirectoryProduction)
 	serverPath := serverURL.Host
 	accountsPath := filepath.Join(rootPath, serverPath)

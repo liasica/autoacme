@@ -13,6 +13,8 @@ import (
 	"github.com/go-acme/lego/v4/certcrypto"
 	"github.com/go-acme/lego/v4/certificate"
 	"go.uber.org/zap"
+
+	"github.com/liasica/aliacme/internal/g"
 )
 
 const (
@@ -41,7 +43,7 @@ type ArchiveStorage struct {
 }
 
 func NewArchiveStorage() (s *ArchiveStorage, err error) {
-	rootPath := filepath.Join(baseStoragePath, baseArchiveFolderName)
+	rootPath := filepath.Join(g.StoragePath, baseArchiveFolderName)
 
 	err = CreateNonExistingFolder(rootPath)
 	if err != nil {
