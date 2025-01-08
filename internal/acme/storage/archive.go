@@ -58,14 +58,13 @@ func NewArchiveStorage() (s *ArchiveStorage, err error) {
 }
 
 func (s *ArchiveStorage) SaveResource(resource *certificate.Resource) (err error) {
-	path := filepath.Join(s.rootPath, resource.Domain)
-	err = CreateNonExistingFolder(path)
+	err = CreateNonExistingFolder(filepath.Join(s.rootPath, resource.Domain))
 	if err != nil {
 		return
 	}
 
 	if resource.IssuerCertificate != nil {
-		err = s.WriteFile(s.GetFileName(path, issuerFile), resource.IssuerCertificate)
+		err = s.WriteFile(s.GetFileName(resource.Domain, issuerFile), resource.IssuerCertificate)
 		if err != nil {
 			zap.L().Error("failed to write issuer certificate", zap.Error(err))
 			return
@@ -73,13 +72,13 @@ func (s *ArchiveStorage) SaveResource(resource *certificate.Resource) (err error
 	}
 
 	if resource.PrivateKey != nil {
-		err = s.WriteFile(s.GetFileName(path, privateFile), resource.PrivateKey)
+		err = s.WriteFile(s.GetFileName(resource.Domain, privateFile), resource.PrivateKey)
 		if err != nil {
 			zap.L().Error("failed to write private key", zap.Error(err))
 			return
 		}
 
-		err = s.WriteFile(s.GetFileName(path, certFile), resource.Certificate)
+		err = s.WriteFile(s.GetFileName(resource.Domain, certFile), resource.Certificate)
 		if err != nil {
 			zap.L().Error("failed to write certificate", zap.Error(err))
 		}
