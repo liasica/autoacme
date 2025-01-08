@@ -5,6 +5,7 @@
 package storage
 
 import (
+	"crypto"
 	"crypto/x509"
 	"os"
 	"path/filepath"
@@ -64,7 +65,7 @@ func (s *ArchiveStorage) SaveResource(resource *certificate.Resource) (err error
 	if resource.IssuerCertificate != nil {
 		err = s.WriteFile(s.GetFileName(path, issuerFile), resource.IssuerCertificate)
 		if err != nil {
-			zap.L().Error("Failed to write issuer certificate", zap.Error(err))
+			zap.L().Error("failed to write issuer certificate", zap.Error(err))
 			return
 		}
 	}
@@ -72,13 +73,13 @@ func (s *ArchiveStorage) SaveResource(resource *certificate.Resource) (err error
 	if resource.PrivateKey != nil {
 		err = s.WriteFile(s.GetFileName(path, privateFile), resource.PrivateKey)
 		if err != nil {
-			zap.L().Error("Failed to write private key", zap.Error(err))
+			zap.L().Error("failed to write private key", zap.Error(err))
 			return
 		}
 
 		err = s.WriteFile(s.GetFileName(path, certFile), resource.Certificate)
 		if err != nil {
-			zap.L().Error("Failed to write certificate", zap.Error(err))
+			zap.L().Error("failed to write certificate", zap.Error(err))
 		}
 	}
 
@@ -93,8 +94,17 @@ func (s *ArchiveStorage) WriteFile(filename string, data []byte) error {
 	return os.WriteFile(filepath.Join(s.rootPath, filename), data, 0o600)
 }
 
-func (s *ArchiveStorage) ReadFile(domain, extension string) ([]byte, error) {
-	return os.ReadFile(s.GetFileName(domain, extension))
+func (s *ArchiveStorage) ReadFile(domain, filename string) ([]byte, error) {
+	return os.ReadFile(s.GetFileName(domain, filename))
+}
+
+func (s *ArchiveStorage) ReadPrivateKey(domain string) (crypto.PrivateKey, error) {
+	b, err := s.ReadFile(domain, privateFile)
+	if err != nil {
+		return nil, err
+	}
+
+	return certcrypto.ParsePEMPrivateKey(b)
 }
 
 func (s *ArchiveStorage) ReadCertificate(domain string) ([]*x509.Certificate, error) {

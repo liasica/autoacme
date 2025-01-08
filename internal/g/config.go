@@ -39,12 +39,12 @@ func LoadConfig(path string) {
 	// Load the file.
 	err := k.Load(file.Provider(path), yaml.Parser())
 	if err != nil {
-		zap.L().Fatal("Load config file failed", zap.Error(err))
+		zap.L().Fatal("load config file failed", zap.Error(err))
 	}
 
 	err = k.Unmarshal("", cfg)
 	if err != nil {
-		zap.L().Fatal("Unmarshal config file failed", zap.Error(err))
+		zap.L().Fatal("unmarshal config file failed", zap.Error(err))
 	}
 }
 

@@ -39,7 +39,7 @@ func (h *Hook) Run() {
 		switch hook.Name {
 		case g.DomainHookNameCDN:
 			if hook.CDNHook == nil {
-				zap.L().Error("CDN hook is not configured")
+				zap.L().Error("cDN hook is not configured")
 				continue
 			}
 			go h.RunCDN(hook.CDNHook)

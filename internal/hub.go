@@ -24,7 +24,7 @@ type Hub struct {
 func New() *Hub {
 	archiveStorage, err := storage.NewArchiveStorage()
 	if err != nil {
-		zap.L().Fatal("Failed to create archive storage")
+		zap.L().Fatal("failed to create archive storage")
 	}
 	return &Hub{
 		archive: archiveStorage,
@@ -32,7 +32,7 @@ func New() *Hub {
 }
 
 func (h *Hub) Run() {
-	ticker := time.NewTicker(10 * time.Second)
+	ticker := time.NewTicker(6 * time.Hour)
 	defer ticker.Stop()
 	for ; true; <-ticker.C {
 		h.run()
@@ -55,9 +55,9 @@ func (h *Hub) handle(do *g.Domain) {
 	}
 
 	cert := certs[0]
-	if time.Now().After(cert.NotAfter.AddDate(0, 0, -7)) {
+	if time.Now().After(cert.NotAfter.AddDate(0, 0, -15)) {
 		zap.L().Info("renew certificate", zap.String("domain", do.Domain))
-		h.handleHook(do, h.handleRenewwal(do, cert))
+		h.handleHook(do, h.handleRenewal(do, cert))
 	} else {
 		zap.L().Info("skip renew certificate", zap.String("domain", do.Domain))
 	}
@@ -70,8 +70,26 @@ func (h *Hub) handleNew(do *g.Domain) (resource *certificate.Resource) {
 	})
 }
 
-func (h *Hub) handleRenewwal(do *g.Domain, cert *x509.Certificate) *certificate.Resource {
-	return nil
+func (h *Hub) handleRenewal(do *g.Domain, cert *x509.Certificate) *certificate.Resource {
+	privateKey, err := h.archive.ReadPrivateKey(do.Domain)
+	if err != nil {
+		zap.L().Error("failed to read private key", zap.String("domain", do.Domain))
+		return nil
+	}
+
+	var replacesCertID string
+	replacesCertID, err = certificate.MakeARICertID(cert)
+	if err != nil {
+		zap.L().Error("failed to make certificate ID", zap.String("domain", do.Domain))
+		return nil
+	}
+
+	return acme.Obtain(do, certificate.ObtainRequest{
+		Domains:        []string{do.Domain},
+		Bundle:         true,
+		PrivateKey:     privateKey,
+		ReplacesCertID: replacesCertID,
+	})
 }
 
 func (h *Hub) handleHook(do *g.Domain, resource *certificate.Resource) {

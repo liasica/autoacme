@@ -19,13 +19,13 @@ func (h *Hook) RunCDN(cfg *g.DomainHookCDNConfig) {
 
 	cdnClient, err := ali.NewCDNClient(cfg.AccessKeyId, cfg.AccessKeySecret)
 	if err != nil {
-		zap.L().Error("Failed to create CDN client", zap.Error(err))
+		zap.L().Error("failed to create CDN client", zap.Error(err))
 	}
 
 	var cdnResponse *cdn.SetDomainServerCertificateResponse
 	cdnResponse, err = cdnClient.SetDomainServerCertificate(h.do.Domain, string(h.privateKey), string(h.certificate))
 	if err != nil {
-		zap.L().Error("Failed to set domain server certificate", zap.Error(err))
+		zap.L().Error("failed to set domain server certificate", zap.Error(err))
 		return
 	}
 
