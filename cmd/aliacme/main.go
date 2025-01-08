@@ -14,7 +14,7 @@ var Version = "v1.0.0"
 
 func main() {
 	var cfg string
-	flag.StringVar(&cfg, "config", "config/config.yaml", "Config file")
+	flag.StringVar(&cfg, "config", "/etc/aliacme/config.yaml", "Config file")
 	flag.Parse()
 
 	internal.Boot(cfg, Version)
