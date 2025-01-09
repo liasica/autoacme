@@ -26,7 +26,7 @@ func Obtain(do *g.Domain, request certificate.ObtainRequest) (resource *certific
 	switch do.Provider {
 	case g.ProviderDNS:
 		if do.DNSProvider == nil {
-			zap.L().Error("dNS provider is not configured")
+			zap.L().Error("DNS provider is not configured")
 			return
 		}
 		var p *provider.DnsProvider
@@ -42,15 +42,20 @@ func Obtain(do *g.Domain, request certificate.ObtainRequest) (resource *certific
 			return
 		}
 	case g.ProviderOSS:
-		err = client.Challenge.SetHTTP01Provider(&provider.OssProvider{})
+		if do.OSSProvider == nil {
+			zap.L().Error("OSS provider is not configured")
+			return
+		}
+		var p *provider.OssProvider
+		p, err = provider.NewOssProvider(do.OSSProvider.Endpoint, do.OSSProvider.AccessKeyId, do.OSSProvider.AccessKeySecret, do.OSSProvider.Bucket, do.OSSProvider.Path)
 		if err != nil {
-			zap.L().Error("failed to set HTTP01 provider", zap.Error(err))
+			zap.L().Error("failed to create OSS provider", zap.Error(err))
 			return
 		}
 
-		err = client.Challenge.SetTLSALPN01Provider(&provider.OssProvider{})
+		err = client.Challenge.SetHTTP01Provider(p)
 		if err != nil {
-			zap.L().Error("failed to set TLSALPN01 provider", zap.Error(err))
+			zap.L().Error("failed to set HTTP01 provider", zap.Error(err))
 			return
 		}
 	case g.ProviderHTTP:

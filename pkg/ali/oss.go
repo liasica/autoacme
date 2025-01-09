@@ -33,7 +33,12 @@ func NewOSS(endpoint, accessKeyId, accessKeySecret, bucket string) (*OSSClient, 
 	return c, nil
 }
 
-// UploadBytes 上传文件
-func (c *OSSClient) UploadBytes(name string, b []byte) error {
-	return c.Bucket.PutObject(name, bytes.NewReader(b))
+// PutObject 上传文件
+func (c *OSSClient) PutObject(key string, b []byte) error {
+	return c.Bucket.PutObject(key, bytes.NewReader(b))
+}
+
+// DeleteObject 删除文件
+func (c *OSSClient) DeleteObject(key string) error {
+	return c.Bucket.DeleteObject(key)
 }

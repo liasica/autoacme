@@ -5,6 +5,8 @@
 package provider
 
 import (
+	"fmt"
+
 	dns "github.com/alibabacloud-go/alidns-20150109/v2/client"
 	"github.com/go-acme/lego/v4/challenge/dns01"
 	"go.uber.org/zap"
@@ -38,13 +40,13 @@ func (p *DnsProvider) Present(domain, token, keyAuth string) (err error) {
 	var l *tld.List
 	l, err = tld.Parse(info.EffectiveFQDN)
 	if err != nil {
-		return
+		return fmt.Errorf("dns: failed to parse domain: %w", err)
 	}
 
 	var records []*dns.DescribeDomainRecordsResponseBodyDomainRecordsRecord
 	records, err = p.Client.GetDomainRecords(l.Domain())
 	if err != nil {
-		return
+		return fmt.Errorf("dns: failed to get domain records: %w", err)
 	}
 
 	for _, record := range records {
@@ -52,12 +54,15 @@ func (p *DnsProvider) Present(domain, token, keyAuth string) (err error) {
 			// 删除已存在的记录
 			_, err = p.Client.DeleteResolve(record.RecordId)
 			if err != nil {
-				return
+				return fmt.Errorf("dns: failed to delete domain record: %w", err)
 			}
 		}
 	}
 
 	p.recordId, err = p.Client.AddResolve(l.Domain(), "TXT", l.SubDomain(), info.Value)
+	if err != nil {
+		return fmt.Errorf("dns: failed to add domain record: %w", err)
+	}
 	return
 }
 
@@ -66,6 +71,9 @@ func (p *DnsProvider) CleanUp(domain, token, keyAuth string) (err error) {
 
 	if p.recordId != nil {
 		_, err = p.Client.DeleteResolve(p.recordId)
+		if err != nil {
+			return fmt.Errorf("dns: failed to delete domain record: %w", err)
+		}
 	}
 	return
 }
