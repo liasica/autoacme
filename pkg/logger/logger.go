@@ -7,28 +7,33 @@ package logger
 import "go.uber.org/zap"
 
 type Logger struct {
+	skip int
 }
 
-func (l Logger) Fatal(args ...interface{}) {
-	zap.S().WithOptions(zap.AddCallerSkip(1)).Fatal(args...)
+func NewLogger(skip int) *Logger {
+	return &Logger{skip: skip}
 }
 
-func (l Logger) Fatalln(args ...interface{}) {
-	zap.S().WithOptions(zap.AddCallerSkip(1)).Fatalln(args...)
+func (l *Logger) Fatal(args ...interface{}) {
+	zap.S().WithOptions(zap.AddCallerSkip(l.skip)).Fatal(args...)
 }
 
-func (l Logger) Fatalf(format string, args ...interface{}) {
-	zap.S().WithOptions(zap.AddCallerSkip(1)).Fatalf(format, args...)
+func (l *Logger) Fatalln(args ...interface{}) {
+	zap.S().WithOptions(zap.AddCallerSkip(l.skip)).Fatalln(args...)
 }
 
-func (l Logger) Print(args ...interface{}) {
-	zap.S().WithOptions(zap.AddCallerSkip(1)).Info(args...)
+func (l *Logger) Fatalf(format string, args ...interface{}) {
+	zap.S().WithOptions(zap.AddCallerSkip(l.skip)).Fatalf(format, args...)
 }
 
-func (l Logger) Println(args ...interface{}) {
-	zap.S().WithOptions(zap.AddCallerSkip(1)).Infoln(args...)
+func (l *Logger) Print(args ...interface{}) {
+	zap.S().WithOptions(zap.AddCallerSkip(l.skip)).Info(args...)
 }
 
-func (l Logger) Printf(format string, args ...interface{}) {
-	zap.S().WithOptions(zap.AddCallerSkip(1)).Infof(format, args...)
+func (l *Logger) Println(args ...interface{}) {
+	zap.S().WithOptions(zap.AddCallerSkip(l.skip)).Infoln(args...)
+}
+
+func (l *Logger) Printf(format string, args ...interface{}) {
+	zap.S().WithOptions(zap.AddCallerSkip(l.skip)).Infof(format, args...)
 }

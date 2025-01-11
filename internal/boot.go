@@ -28,7 +28,7 @@ func Boot(path, storage, ver string) {
 	// 设置zap
 	l, _ := zap.NewDevelopment()
 	zap.ReplaceGlobals(l)
-	log.Logger = &logger.Logger{}
+	log.Logger = logger.NewLogger(2)
 
 	// 创建runtime目录
 	if _, err := os.Stat(storage); os.IsNotExist(err) {
