@@ -33,7 +33,7 @@ func NewOssProvider(endpoint, accessKeyId, accessKeySecret, bucket, path string)
 }
 
 func (p *OssProvider) Present(domain, token, keyAuth string) error {
-	zap.S().Infof("OSS Present, domain = %s, token = %s, keyAuth = %s", domain, token, keyAuth)
+	zap.S().Infof("OSS provider: present domain = %s, token = %s, keyAuth = %s", domain, token, keyAuth)
 
 	key := strings.Trim(filepath.Join(p.path, http01.ChallengePath(token)), "/")
 	err := p.client.PutObject(key, []byte(keyAuth))
@@ -44,7 +44,7 @@ func (p *OssProvider) Present(domain, token, keyAuth string) error {
 }
 
 func (p *OssProvider) CleanUp(domain, token, keyAuth string) error {
-	zap.S().Infof("OSS CleanUp, domain = %s, token = %s, keyAuth = %s", domain, token, keyAuth)
+	zap.S().Infof("OSS provider: cleanup domain = %s, token = %s, keyAuth = %s", domain, token, keyAuth)
 	key := strings.Trim(filepath.Join(p.path, http01.ChallengePath(token)), "/")
 	err := p.client.DeleteObject(key)
 	if err != nil {

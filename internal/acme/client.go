@@ -29,7 +29,7 @@ func SetupClient() (client *lego.Client, err error) {
 	var user *g.Account
 	user, err = accountsStorage.LoadAccount(cfg.Account)
 	if err != nil {
-		zap.L().Error("failed to load account", zap.Error(err))
+		zap.S().Errorf("failed to load account: %v", err)
 		return
 	}
 
@@ -41,7 +41,7 @@ func SetupClient() (client *lego.Client, err error) {
 	// A client facilitates communication with the CA server.
 	client, err = lego.NewClient(config)
 	if err != nil {
-		zap.L().Error("failed to create lego client", zap.Error(err))
+		zap.S().Errorf("failed to create lego client: %v", err)
 		return
 	}
 
@@ -52,7 +52,7 @@ func SetupClient() (client *lego.Client, err error) {
 		// needSave = true
 		reg, err = client.Registration.Register(registration.RegisterOptions{TermsOfServiceAgreed: true})
 		if err != nil {
-			zap.L().Error("failed to register", zap.Error(err))
+			zap.S().Errorf("failed to register: %v", err)
 			return
 		}
 
@@ -61,7 +61,7 @@ func SetupClient() (client *lego.Client, err error) {
 		// } else {
 		// 	reg, err = client.Registration.QueryRegistration()
 		// 	if err != nil {
-		// 		zap.L().Error("failed to query registration", zap.Error(err))
+		// 		zap.S().Errorf("failed to query registration: %v", err)
 		// 		return
 		// 	}
 	}

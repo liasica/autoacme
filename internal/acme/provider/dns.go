@@ -34,7 +34,7 @@ func NewDnsProvider(accessKeyId, accessKeySecret string) (p *DnsProvider, err er
 }
 
 func (p *DnsProvider) Present(domain, token, keyAuth string) (err error) {
-	zap.S().Infof("DNS Present, domain = %s, token = %s, keyAuth = %s", domain, token, keyAuth)
+	zap.S().Infof("DNS provider: present domain = %s, token = %s, keyAuth = %s", domain, token, keyAuth)
 
 	info := dns01.GetChallengeInfo(domain, keyAuth)
 	var l *tld.List
@@ -67,7 +67,7 @@ func (p *DnsProvider) Present(domain, token, keyAuth string) (err error) {
 }
 
 func (p *DnsProvider) CleanUp(domain, token, keyAuth string) (err error) {
-	zap.S().Infof("DNS CleanUp, domain = %s, token = %s, keyAuth = %s", domain, token, keyAuth)
+	zap.S().Infof("DNS provider: cleanup domain = %s, token = %s, keyAuth = %s", domain, token, keyAuth)
 
 	if p.recordId != nil {
 		_, err = p.Client.DeleteResolve(p.recordId)

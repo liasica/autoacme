@@ -66,7 +66,7 @@ func (s *ArchiveStorage) SaveResource(resource *certificate.Resource) (err error
 	if resource.IssuerCertificate != nil {
 		err = s.WriteFile(resource.Domain, issuerFile, resource.IssuerCertificate)
 		if err != nil {
-			zap.L().Error("failed to write issuer certificate", zap.Error(err))
+			zap.S().Errorf("failed to write issuer certificate: %v", err)
 			return
 		}
 	}
@@ -74,13 +74,13 @@ func (s *ArchiveStorage) SaveResource(resource *certificate.Resource) (err error
 	if resource.PrivateKey != nil {
 		err = s.WriteFile(resource.Domain, privateFile, resource.PrivateKey)
 		if err != nil {
-			zap.L().Error("failed to write private key", zap.Error(err))
+			zap.S().Errorf("failed to write private key: %v", err)
 			return
 		}
 
 		err = s.WriteFile(resource.Domain, certFile, resource.Certificate)
 		if err != nil {
-			zap.L().Error("failed to write certificate", zap.Error(err))
+			zap.S().Errorf("failed to write certificate: %v", err)
 		}
 	}
 

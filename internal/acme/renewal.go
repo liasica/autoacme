@@ -15,14 +15,14 @@ import (
 func GetRenewalTime(cert *x509.Certificate) (renewal bool) {
 	client, err := SetupClient()
 	if err != nil {
-		zap.L().Error("failed to create client", zap.Error(err))
+		zap.S().Errorf("failed to create client: %v", err)
 		return
 	}
 
 	var info *certificate.RenewalInfoResponse
 	info, err = client.Certificate.GetRenewalInfo(certificate.RenewalInfoRequest{Cert: cert})
 	if err != nil {
-		zap.L().Error("failed to get renewal info", zap.Error(err))
+		zap.S().Errorf("failed to get renewal info: %v", err)
 		return
 	}
 

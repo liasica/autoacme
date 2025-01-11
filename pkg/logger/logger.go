@@ -10,25 +10,25 @@ type Logger struct {
 }
 
 func (l Logger) Fatal(args ...interface{}) {
-	zap.S().Fatal(args...)
+	zap.S().With(zap.AddCallerSkip(1)).Fatal(args...)
 }
 
 func (l Logger) Fatalln(args ...interface{}) {
-	zap.S().Fatalln(args...)
+	zap.S().With(zap.AddCallerSkip(1)).Fatalln(args...)
 }
 
 func (l Logger) Fatalf(format string, args ...interface{}) {
-	zap.S().Fatalf(format, args...)
+	zap.S().With(zap.AddCallerSkip(1)).Fatalf(format, args...)
 }
 
 func (l Logger) Print(args ...interface{}) {
-	zap.S().Info(args...)
+	zap.S().With(zap.AddCallerSkip(1)).Info(args...)
 }
 
 func (l Logger) Println(args ...interface{}) {
-	zap.S().Infoln(args...)
+	zap.S().With(zap.AddCallerSkip(1)).Infoln(args...)
 }
 
 func (l Logger) Printf(format string, args ...interface{}) {
-	zap.S().Infof(format, args...)
+	zap.S().With(zap.AddCallerSkip(1)).Infof(format, args...)
 }

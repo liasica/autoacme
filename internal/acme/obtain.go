@@ -19,56 +19,56 @@ func Obtain(do *g.Domain, request certificate.ObtainRequest) (resource *certific
 
 	client, err := SetupClient()
 	if err != nil {
-		zap.L().Error("failed to create client", zap.Error(err))
+		zap.S().Errorf("failed to create client: %v", err)
 		return
 	}
 
 	switch do.Provider {
 	case g.ProviderDNS:
 		if do.DNSProvider == nil {
-			zap.L().Error("DNS provider is not configured")
+			zap.S().Error("DNS provider is not configured")
 			return
 		}
 		var p *provider.DnsProvider
 		p, err = provider.NewDnsProvider(do.DNSProvider.AccessKeyId, do.DNSProvider.AccessKeySecret)
 		if err != nil {
-			zap.L().Error("failed to create DNS provider", zap.Error(err))
+			zap.S().Errorf("failed to create DNS provider: %v", err)
 			return
 		}
 
 		err = client.Challenge.SetDNS01Provider(p, dns01.AddRecursiveNameservers(cfg.Dns))
 		if err != nil {
-			zap.L().Error("failed to set DNS01 provider", zap.Error(err))
+			zap.S().Errorf("failed to set DNS01 provider: %v", err)
 			return
 		}
 	case g.ProviderOSS:
 		if do.OSSProvider == nil {
-			zap.L().Error("OSS provider is not configured")
+			zap.S().Error("OSS provider is not configured")
 			return
 		}
 		var p *provider.OssProvider
 		p, err = provider.NewOssProvider(do.OSSProvider.Endpoint, do.OSSProvider.AccessKeyId, do.OSSProvider.AccessKeySecret, do.OSSProvider.Bucket, do.OSSProvider.Path)
 		if err != nil {
-			zap.L().Error("failed to create OSS provider", zap.Error(err))
+			zap.S().Errorf("failed to create OSS provider: %v", err)
 			return
 		}
 
 		err = client.Challenge.SetHTTP01Provider(p)
 		if err != nil {
-			zap.L().Error("failed to set HTTP01 provider", zap.Error(err))
+			zap.S().Errorf("failed to set HTTP01 provider: %v", err)
 			return
 		}
 	case g.ProviderHTTP:
 		// TODO: neet to implement
 		panic("Not implemented")
 	default:
-		zap.L().Error("unknown provider")
+		zap.S().Error("unknown provider")
 		return
 	}
 
 	resource, err = client.Certificate.Obtain(request)
 	if err != nil {
-		zap.L().Error("failed to obtain certificate", zap.Error(err))
+		zap.S().Errorf("failed to obtain certificate: %v", err)
 		return
 	}
 
@@ -76,12 +76,12 @@ func Obtain(do *g.Domain, request certificate.ObtainRequest) (resource *certific
 	var archiveStorage *storage.ArchiveStorage
 	archiveStorage, err = storage.NewArchiveStorage()
 	if err != nil {
-		zap.L().Error("failed to create archive storage", zap.Error(err))
+		zap.S().Errorf("failed to create archive storage: %v", err)
 		return
 	}
 	err = archiveStorage.SaveResource(resource)
 	if err != nil {
-		zap.L().Error("failed to save resource", zap.Error(err))
+		zap.S().Errorf("failed to save resource: %v", err)
 		return
 	}
 

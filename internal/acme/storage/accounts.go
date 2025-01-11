@@ -141,12 +141,12 @@ func (s *AccountsStorage) Save(account *g.Account) {
 	b, _ := jsoniter.MarshalIndent(account, "", "  ")
 	err := os.WriteFile(s.accountFilePath, b, os.ModePerm)
 	if err != nil {
-		zap.L().Error("failed to save account file", zap.Error(err))
+		zap.S().Errorf("failed to save account file: %v", err)
 	}
 
 	err = s.SavePrivateKeyFile(account.Key)
 	if err != nil {
-		zap.L().Error("failed to save private key file", zap.Error(err))
+		zap.S().Errorf("failed to save private key file: %v", err)
 	}
 }
 
@@ -162,7 +162,7 @@ func (s *AccountsStorage) LoadAccount(email string) (account *g.Account, err err
 	if s.PrivateKeyFileExists() {
 		account.Key, err = s.LoadPrivateKeyFile()
 		if err != nil {
-			zap.L().Error("failed to load private key file", zap.Error(err))
+			zap.S().Errorf("failed to load private key file: %v", err)
 			return
 		}
 	}
@@ -170,7 +170,7 @@ func (s *AccountsStorage) LoadAccount(email string) (account *g.Account, err err
 	if account.Key == nil {
 		account.Key, err = ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
 		if err != nil {
-			zap.L().Error("failed to generate private key", zap.Error(err))
+			zap.S().Error("failed to generate private key: %v", err)
 			return
 		}
 	}
