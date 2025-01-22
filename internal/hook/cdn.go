@@ -12,7 +12,7 @@ import (
 	"github.com/liasica/autoacme/pkg/ali"
 )
 
-func (h *Hook) RunCDN(cfg *g.DomainHookCDNConfig) {
+func (h *Hook) AliyunCDN(cfg *g.DomainHookCDNConfig) {
 	defer func() {
 		h.wg.Done()
 	}()

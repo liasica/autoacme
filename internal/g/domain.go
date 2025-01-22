@@ -15,7 +15,8 @@ const (
 type DomainHookName string
 
 const (
-	DomainHookNameCDN DomainHookName = "CDN" // 上传至CDN
+	DomainHookNameCDN      DomainHookName = "CDN"       // 上传至CDN
+	DomainHookNameQiniuSSL DomainHookName = "QINIU-SSL" // 上传至七牛云SSL
 )
 
 // 赋予权限列表:
@@ -30,7 +31,7 @@ type Domain struct {
 	OSSProvider  *DomainProviderOSSConfig
 	HTTPProvider *DomainProviderHTTPConfig
 
-	Hooks []*DomainHook // TODO: 钩子
+	Hooks []*DomainHook
 }
 
 // DomainProviderDNSConfig DNS配置
@@ -56,8 +57,9 @@ type DomainProviderHTTPConfig struct {
 }
 
 type DomainHook struct {
-	Name    DomainHookName       // 钩子类型
-	CDNHook *DomainHookCDNConfig // CDN配置
+	Name         DomainHookName            // 钩子类型
+	CDNHook      *DomainHookCDNConfig      // CDN配置
+	QiniuSSLHook *DomainHookQiniuSSLConfig // 七牛云SSL配置
 }
 
 // DomainHookCDNConfig CDN配置
@@ -65,4 +67,10 @@ type DomainHook struct {
 type DomainHookCDNConfig struct {
 	AccessKeyId     string
 	AccessKeySecret string
+}
+
+// DomainHookQiniuSSLConfig 七牛云SSL配置
+type DomainHookQiniuSSLConfig struct {
+	AK string
+	SK string
 }

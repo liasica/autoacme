@@ -40,7 +40,14 @@ func (h *Hook) Run() {
 				zap.S().Error("CDN hook is not configured")
 				continue
 			}
-			go h.RunCDN(hook.CDNHook)
+			go h.AliyunCDN(hook.CDNHook)
+
+		case g.DomainHookNameQiniuSSL:
+			if hook.QiniuSSLHook == nil {
+				zap.S().Error("Qiniu SSL hook is not configured")
+				continue
+			}
+			go h.QiniuSSL(hook.QiniuSSLHook)
 
 		default:
 			zap.S().Error("unknown hook", zap.String("hook", string(hook.Name)))

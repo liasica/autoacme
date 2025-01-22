@@ -44,7 +44,7 @@ domains:
       endpoint: oss-cn-beijing.aliyuncs.com # OSS Endpoint
       path: # 证书存储在oss上的路径
     hooks:
-      - name: CDN # 部署到CDN
+      - name: CDN # 部署到阿里云CDN
         cdnHook:
           accessKeyId: LAIT5... # 阿里云AccessKey
           accessKeySecret: rTMKy... # 阿里云AccessKey
