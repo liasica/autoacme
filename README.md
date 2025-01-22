@@ -11,7 +11,7 @@
     - [ ] HTTP
   - [x] 上传证书
     - [x] CDN
-- [ ] 七牛云
+- [x] 七牛云
   - [x] SSL上传
 
 ### 使用方法
@@ -48,6 +48,10 @@ domains:
         cdnHook:
           accessKeyId: LAIT5... # 阿里云AccessKey
           accessKeySecret: rTMKy... # 阿里云AccessKey
+      - name: QINIU-SSL # 部署到七牛云CDN
+        qiniuSSLHook:
+          ak: dId...
+          sk: tO1...
 ```
 
 ### 阿里云权限
