@@ -1,4 +1,4 @@
-// Copyright (C) aliacme. 2025-present.
+// Copyright (C) autoacme. 2025-present.
 //
 // Created at 2025-01-07, by liasica
 
@@ -16,8 +16,8 @@ import (
 	jsoniter "github.com/json-iterator/go"
 	"go.uber.org/zap"
 
-	"github.com/liasica/aliacme/internal/g"
-	"github.com/liasica/aliacme/key"
+	"github.com/liasica/autoacme/internal/g"
+	"github.com/liasica/autoacme/key"
 )
 
 const (

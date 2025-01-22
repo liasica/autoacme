@@ -1,4 +1,4 @@
-// Copyright (C) aliacme. 2025-present.
+// Copyright (C) autoacme. 2025-present.
 //
 // Created at 2025-01-08, by liasica
 
@@ -8,8 +8,8 @@ import (
 	cdn "github.com/alibabacloud-go/cdn-20180510/client"
 	"go.uber.org/zap"
 
-	"github.com/liasica/aliacme/internal/g"
-	"github.com/liasica/aliacme/pkg/ali"
+	"github.com/liasica/autoacme/internal/g"
+	"github.com/liasica/autoacme/pkg/ali"
 )
 
 func (h *Hook) RunCDN(cfg *g.DomainHookCDNConfig) {

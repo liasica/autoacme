@@ -2,7 +2,7 @@ FROM golang:1-alpine AS builder
 
 RUN apk --no-cache --no-progress add make git
 
-WORKDIR /go/aliacme
+WORKDIR /go/autoacme
 COPY . .
 RUN go mod download && make build
 
@@ -15,6 +15,6 @@ RUN apk update \
     && rm -rf /var/cache/apk/* \
     && rm -rf /var/lib/apt/lists/*
 
-COPY --from=builder /go/aliacme/build/aliacme /usr/bin/aliacme
+COPY --from=builder /go/autoacme/build/autoacme /usr/bin/autoacme
 
-ENTRYPOINT [ "/usr/bin/aliacme" ]
+ENTRYPOINT [ "/usr/bin/autoacme" ]

@@ -1,4 +1,4 @@
-// Copyright (C) aliacme. 2025-present.
+// Copyright (C) autoacme. 2025-present.
 //
 // Created at 2025-01-08, by liasica
 
@@ -11,8 +11,8 @@ import (
 	"github.com/go-acme/lego/v4/registration"
 	"go.uber.org/zap"
 
-	"github.com/liasica/aliacme/internal/acme/storage"
-	"github.com/liasica/aliacme/internal/g"
+	"github.com/liasica/autoacme/internal/acme/storage"
+	"github.com/liasica/autoacme/internal/g"
 )
 
 func SetupClient() (client *lego.Client, err error) {

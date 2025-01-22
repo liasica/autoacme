@@ -1,4 +1,4 @@
-// Copyright (C) aliacme. 2025-present.
+// Copyright (C) autoacme. 2025-present.
 //
 // Created at 2025-01-07, by liasica
 
@@ -11,8 +11,8 @@ import (
 	"github.com/go-acme/lego/v4/log"
 	"go.uber.org/zap"
 
-	"github.com/liasica/aliacme/internal/g"
-	"github.com/liasica/aliacme/pkg/logger"
+	"github.com/liasica/autoacme/internal/g"
+	"github.com/liasica/autoacme/pkg/logger"
 )
 
 func Boot(path, storage, ver string) {

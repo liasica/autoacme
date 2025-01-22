@@ -1,4 +1,4 @@
-// Copyright (C) aliacme. 2025-present.
+// Copyright (C) autoacme. 2025-present.
 //
 // Created at 2025-01-08, by liasica
 
@@ -11,10 +11,10 @@ import (
 	"github.com/go-acme/lego/v4/certificate"
 	"go.uber.org/zap"
 
-	"github.com/liasica/aliacme/internal/acme"
-	"github.com/liasica/aliacme/internal/acme/storage"
-	"github.com/liasica/aliacme/internal/g"
-	"github.com/liasica/aliacme/internal/hook"
+	"github.com/liasica/autoacme/internal/acme"
+	"github.com/liasica/autoacme/internal/acme/storage"
+	"github.com/liasica/autoacme/internal/g"
+	"github.com/liasica/autoacme/internal/hook"
 )
 
 type Hub struct {

@@ -7,8 +7,8 @@ TAG_NAME := $(shell git tag -l --contains HEAD)
 SHA := $(shell git rev-parse HEAD)
 VERSION := $(if $(TAG_NAME),$(TAG_NAME),$(SHA))
 
-BIN_OUTPUT := build/aliacme
-MAIN_DIRECTORY := ./cmd/aliacme
+BIN_OUTPUT := build/autoacme
+MAIN_DIRECTORY := ./cmd/autoacme
 
 build:
 	@echo Version: $(VERSION)

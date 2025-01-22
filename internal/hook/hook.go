@@ -1,4 +1,4 @@
-// Copyright (C) aliacme. 2025-present.
+// Copyright (C) autoacme. 2025-present.
 //
 // Created at 2025-01-08, by liasica
 
@@ -9,7 +9,7 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/liasica/aliacme/internal/g"
+	"github.com/liasica/autoacme/internal/g"
 )
 
 type Hook struct {

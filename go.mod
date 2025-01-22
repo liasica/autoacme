@@ -1,4 +1,4 @@
-module github.com/liasica/aliacme
+module github.com/liasica/autoacme
 
 go 1.23
 

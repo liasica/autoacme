@@ -1,4 +1,4 @@
-// Copyright (C) aliacme. 2025-present.
+// Copyright (C) autoacme. 2025-present.
 //
 // Created at 2025-01-07, by liasica
 
@@ -11,8 +11,8 @@ import (
 	"github.com/go-acme/lego/v4/challenge/dns01"
 	"go.uber.org/zap"
 
-	"github.com/liasica/aliacme/pkg/ali"
-	"github.com/liasica/aliacme/pkg/tld"
+	"github.com/liasica/autoacme/pkg/ali"
+	"github.com/liasica/autoacme/pkg/tld"
 )
 
 type DnsProvider struct {

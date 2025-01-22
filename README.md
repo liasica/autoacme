@@ -1,4 +1,4 @@
-# aliacme
+# autoacme
 
 一个自动化申请证书并部署到阿里云产品的工具
 
@@ -15,10 +15,10 @@
 
 ```shell
 docker run -it --rm \
-  --name aliacme \
-  -v ${PWD}/config/config.yaml:/etc/aliacme/config.yaml \
-  -v ${PWD}/runtime:/etc/aliacme \
-  ghcr.io/liasica/aliacme:master
+  --name autoacme \
+  -v ${PWD}/config/config.yaml:/etc/autoacme/config.yaml \
+  -v ${PWD}/runtime:/etc/autoacme \
+  ghcr.io/liasica/autoacme:master
 ```
 
 ### 配置文件
