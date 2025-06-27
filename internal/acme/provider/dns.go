@@ -6,6 +6,7 @@ package provider
 
 import (
 	"fmt"
+	"time"
 
 	dns "github.com/alibabacloud-go/alidns-20150109/v2/client"
 	"github.com/go-acme/lego/v4/challenge/dns01"
@@ -76,4 +77,8 @@ func (p *DnsProvider) CleanUp(domain, token, keyAuth string) (err error) {
 		}
 	}
 	return
+}
+
+func (p *DnsProvider) Timeout() (timeout, interval time.Duration) {
+	return 10 * time.Minute, 2 * time.Second
 }
