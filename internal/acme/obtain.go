@@ -5,8 +5,6 @@
 package acme
 
 import (
-	"time"
-
 	"github.com/go-acme/lego/v4/certificate"
 	"github.com/go-acme/lego/v4/challenge/dns01"
 	"go.uber.org/zap"
@@ -32,13 +30,13 @@ func Obtain(do *g.Domain, request certificate.ObtainRequest) (resource *certific
 			return
 		}
 		var p *provider.DnsProvider
-		p, err = provider.NewDnsProvider(do.DNSProvider.AccessKeyId, do.DNSProvider.AccessKeySecret)
+		p, err = provider.NewDnsProvider(do.DNSProvider.AccessKeyId, do.DNSProvider.AccessKeySecret, do.Timeout, do.Interval)
 		if err != nil {
 			zap.S().Errorf("failed to create DNS provider: %v", err)
 			return
 		}
 
-		err = client.Challenge.SetDNS01Provider(p, dns01.AddRecursiveNameservers(cfg.Dns), dns01.AddDNSTimeout(5*time.Minute))
+		err = client.Challenge.SetDNS01Provider(p, dns01.AddRecursiveNameservers(cfg.Dns))
 		if err != nil {
 			zap.S().Errorf("failed to set DNS01 provider: %v", err)
 			return

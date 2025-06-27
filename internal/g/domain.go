@@ -4,6 +4,8 @@
 
 package g
 
+import "time"
+
 type DomainProvider string
 
 const (
@@ -25,6 +27,9 @@ const (
 
 type Domain struct {
 	Domain string // 域名
+
+	Timeout  time.Duration
+	Interval time.Duration
 
 	Provider     DomainProvider // 申请证书方式, DNS / HTTP / OSS
 	DNSProvider  *DomainProviderDNSConfig

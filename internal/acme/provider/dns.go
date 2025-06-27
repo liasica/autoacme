@@ -19,17 +19,27 @@ import (
 type DnsProvider struct {
 	Client *ali.DNSClient
 
-	recordId *string
+	recordId          *string
+	timeout, interval time.Duration
 }
 
-func NewDnsProvider(accessKeyId, accessKeySecret string) (p *DnsProvider, err error) {
+func NewDnsProvider(accessKeyId, accessKeySecret string, timeout, interval time.Duration) (p *DnsProvider, err error) {
 	var client *ali.DNSClient
 	client, err = ali.NewDNSClient(accessKeyId, accessKeySecret)
 	if err != nil {
 		return
 	}
+
+	if timeout <= 0 {
+		timeout = 10 * time.Minute
+	}
+	if interval <= 0 {
+		interval = 2 * time.Second
+	}
 	p = &DnsProvider{
-		Client: client,
+		Client:   client,
+		timeout:  timeout,
+		interval: interval,
 	}
 	return
 }
@@ -80,5 +90,5 @@ func (p *DnsProvider) CleanUp(domain, token, keyAuth string) (err error) {
 }
 
 func (p *DnsProvider) Timeout() (timeout, interval time.Duration) {
-	return 10 * time.Minute, 2 * time.Second
+	return p.timeout, p.interval
 }
